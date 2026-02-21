@@ -1,0 +1,23 @@
+# Unity generated
+Library/
+Temp/
+Logs/
+obj/
+.vs/
+*.csproj
+*.sln
+*.unityproj
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build output
+Builds/
+Build/
+
+# JetBrains Rider
+.idea/
+
+# VSCode
+.vscode/
