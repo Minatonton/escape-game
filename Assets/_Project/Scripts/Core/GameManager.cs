@@ -21,6 +21,8 @@ namespace EscapeGame.Core
 
         public event Action<GameState> OnStateChanged;
 
+        public const int TotalLogCount = 3;
+
         void Awake()
         {
             if (Instance != null && Instance != this)
@@ -48,6 +50,21 @@ namespace EscapeGame.Core
         {
             ChangeState(GameState.MainMenu);
             SceneManager.LoadScene("MainMenu");
+        }
+
+        public void TriggerEnding()
+        {
+            int found = 0;
+            for (int i = 1; i <= TotalLogCount; i++)
+            {
+                if (Save.SaveManager.Instance != null &&
+                    Save.SaveManager.Instance.GetFlag($"log_00{i}"))
+                    found++;
+            }
+
+            ChangeState(GameState.Cutscene);
+            SceneLoader.Instance?.LoadScene(
+                found >= TotalLogCount ? "Ending_True" : "Ending_Normal");
         }
 
         public void QuitGame()

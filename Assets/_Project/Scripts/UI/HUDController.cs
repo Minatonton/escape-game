@@ -56,10 +56,20 @@ namespace EscapeGame.UI
 
         private void OnSlotClicked(ItemData item)
         {
-            if (InventoryManager.Instance.SelectedItem == item)
+            var selected = InventoryManager.Instance.SelectedItem;
+            if (selected != null && selected != item)
+            {
+                var result = InventoryManager.Instance.TryCombine(selected, item);
+                ExaminePanel.Show(result != null
+                    ? $"「{result.displayName}」ができた！"
+                    : "これらは組み合わせられない。");
                 InventoryManager.Instance.SelectItem(null);
+            }
             else
-                InventoryManager.Instance.SelectItem(item);
+            {
+                InventoryManager.Instance.SelectItem(
+                    InventoryManager.Instance.SelectedItem == item ? null : item);
+            }
         }
 
         public void OnMenuButtonClicked()
