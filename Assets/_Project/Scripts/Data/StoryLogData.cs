@@ -7,6 +7,7 @@ namespace EscapeGame.Data
     {
         public string logId;
         public string title;
-        [TextArea] public string bodyText;
+        public string speakerName;
+        [TextArea(4, 12)] public string bodyText;
     }
 }

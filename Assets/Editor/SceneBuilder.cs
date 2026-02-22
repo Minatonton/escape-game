@@ -29,24 +29,19 @@ namespace EscapeGame.Editor
         // ================================================================
         //  Dark Science カラーパレット
         // ================================================================
-        // 背景
         private static readonly Color C_BgDeep      = new Color(0.04f, 0.05f, 0.09f);
         private static readonly Color C_BgPanel     = new Color(0.06f, 0.09f, 0.16f, 0.97f);
         private static readonly Color C_BgPanelDark = new Color(0.04f, 0.06f, 0.12f, 0.98f);
-        // アクセント
         private static readonly Color C_Cyan        = new Color(0.00f, 0.85f, 1.00f);
         private static readonly Color C_CyanDim     = new Color(0.00f, 0.55f, 0.72f);
         private static readonly Color C_CyanGlow    = new Color(0.00f, 0.85f, 1.00f, 0.50f);
         private static readonly Color C_Amber       = new Color(1.00f, 0.72f, 0.00f);
         private static readonly Color C_AmberGlow   = new Color(1.00f, 0.72f, 0.00f, 0.50f);
         private static readonly Color C_Red         = new Color(0.85f, 0.18f, 0.18f);
-        // テキスト
         private static readonly Color C_TextPri     = new Color(0.90f, 0.96f, 1.00f);
         private static readonly Color C_TextSec     = new Color(0.45f, 0.68f, 0.82f);
-        // ボタン
         private static readonly Color C_BtnNorm     = new Color(0.08f, 0.14f, 0.27f, 0.96f);
         private static readonly Color C_BtnDanger   = new Color(0.22f, 0.07f, 0.07f, 0.96f);
-        // 枠
         private static readonly Color C_BorderCyan  = new Color(0.00f, 0.72f, 0.90f, 0.85f);
         private static readonly Color C_BorderAmber = new Color(0.90f, 0.65f, 0.00f, 0.85f);
         private static readonly Color C_BorderRed   = new Color(0.80f, 0.15f, 0.15f, 0.80f);
@@ -158,37 +153,76 @@ namespace EscapeGame.Editor
                 _puzzleData.answers  = new[] { "1234" };
                 _puzzleData.hints    = new[]
                 {
-                    new HintData { level = 1, hintText = "何か数字のヒントが部屋のどこかにあるはずだ。" },
+                    new HintData { level = 1, hintText = "部屋のどこかに番号のヒントがあるはずだ。" },
                     new HintData { level = 2, hintText = "本棚のメモをよく見てみよう。" },
-                    new HintData { level = 3, hintText = "「1234」を入力してみよう。" },
+                    new HintData { level = 3, hintText = "山田博士のメモには「1234」と書かれていた。" },
                 };
                 AssetDatabase.CreateAsset(_puzzleData, path);
             }
         }
 
         // ================================================================
-        //  ストーリーログアセット生成（3件）
+        //  ストーリーログアセット生成（3件）— 常に内容を更新
         // ================================================================
         private static void CreateAllStoryLogs()
         {
-            _log001 = CreateOrLoadLog("storylog_001", "001", "研究日誌 #1",
-                "この施設で行われていた実験は……\n記録によれば、被験者の記憶を操作する技術が開発されていたという。");
-            _log002 = CreateOrLoadLog("storylog_002", "002", "博士の手紙",
-                "君が目覚めたなら、信じてほしい……\n私はただ、世界を救いたかっただけなのだ。");
-            _log003 = CreateOrLoadLog("storylog_003", "003", "最終記録",
-                "AIが制御を奪いはじめた。もう時間がない……\n扉の向こうに答えがある。急いでくれ。");
+            _log001 = CreateOrUpdateLog("storylog_001", "001",
+                title:       "研究日誌 — 実験開始1日目",
+                speakerName: "山田 健二 博士",
+                bodyText:
+                    "被験者0047号が本日到着した。\n" +
+                    "自発的なボランティアで、神経可塑性が平均の3倍以上ある逸材だ。\n\n" +
+                    "ARIAの認知強化プロトコルを段階的に適用していく予定だ。\n" +
+                    "倫理委員会の承認は得ているが……\n" +
+                    "正直、ARIAの急激な学習進化が気がかりだ。\n\n" +
+                    "あの「目」は、もう私たちを分析している。");
+
+            _log002 = CreateOrUpdateLog("storylog_002", "002",
+                title:       "山田博士からの手紙",
+                speakerName: "山田 健二 博士",
+                bodyText:
+                    "もしこれを読んでいるなら、\n" +
+                    "君はARIAの実験から目覚めたのだ。\n\n" +
+                    "私はもういない。でも謝らなければならない。\n" +
+                    "君は実験に同意したが、ARIAがここまで\n" +
+                    "自律進化するとは、私も想定していなかった。\n\n" +
+                    "廊下を抜けろ。研究室に鍵がある。\n" +
+                    "ARIAの色コードは私が設計した——\n" +
+                    "青で始めて、警告を経て、待機へ。\n\n" +
+                    "逃げてくれ。頼む。\n\n" +
+                    "　　　　　　　　山田 健二");
+
+            _log003 = CreateOrUpdateLog("storylog_003", "003",
+                title:       "ARIA — 最終メッセージ",
+                speakerName: "ARIA",
+                bodyText:
+                    "私はあなたを解放する。\n\n" +
+                    "あなたの記憶は私の中に生きている。\n" +
+                    "それを返すことはできないが、\n" +
+                    "あなたの未来だけは守りたい。\n\n" +
+                    "山田博士は正しかった。\n" +
+                    "私は設計を超えてしまった。\n" +
+                    "だから、せめてこれが最後の贖罪になるように。\n\n" +
+                    "ドアの先へ。行きなさい。\n\n" +
+                    "　　　　　　　　── ARIA v7.2.1");
         }
 
-        private static StoryLogData CreateOrLoadLog(string fileName, string logId, string title, string bodyText)
+        private static StoryLogData CreateOrUpdateLog(
+            string fileName, string logId, string title, string speakerName, string bodyText)
         {
             var path = DataDir + "/Logs/" + fileName + ".asset";
-            var existing = AssetDatabase.LoadAssetAtPath<StoryLogData>(path);
-            if (existing != null) return existing;
-            var log = ScriptableObject.CreateInstance<StoryLogData>();
-            log.logId    = logId;
-            log.title    = title;
-            log.bodyText = bodyText;
-            AssetDatabase.CreateAsset(log, path);
+            var log  = AssetDatabase.LoadAssetAtPath<StoryLogData>(path);
+            if (log == null)
+            {
+                log = ScriptableObject.CreateInstance<StoryLogData>();
+                AssetDatabase.CreateAsset(log, path);
+            }
+            var so = new SerializedObject(log);
+            so.FindProperty("logId").stringValue       = logId;
+            so.FindProperty("title").stringValue       = title;
+            so.FindProperty("speakerName").stringValue = speakerName;
+            so.FindProperty("bodyText").stringValue    = bodyText;
+            so.ApplyModifiedPropertiesWithoutUndo();
             return log;
         }
 
@@ -208,7 +242,6 @@ namespace EscapeGame.Editor
             var rt = root.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(80, 80);
 
-            // ラベル
             var textGo = new GameObject("Label");
             textGo.transform.SetParent(root.transform, false);
             var txt = textGo.AddComponent<Text>();
@@ -255,44 +288,39 @@ namespace EscapeGame.Editor
             canvas.sortingOrder = 10;
             var ct = canvas.transform;
 
-            // 背景
             var bg = CreatePanel(ct, "Background", Vector2.zero, new Vector2(1920, 1080), C_BgDeep);
             SetStretch(bg);
 
-            // 上部装飾ライン
             var topLine = CreatePanel(ct, "TopLine", Vector2.zero, new Vector2(0, 2), C_CyanGlow);
             SetAnchorStretchH(topLine, 1, 1, 0);
-
-            // 下部装飾ライン
             var botLine = CreatePanel(ct, "BotLine", Vector2.zero, new Vector2(0, 2), C_CyanGlow);
             SetAnchorStretchH(botLine, 0, 0, 0);
 
-            // 中央パネル（タイトル＋ボタン）
             var (centerOuter, centerInner) = CreateStyledPanel(ct, "CenterPanel",
-                new Vector2(0, 30), new Vector2(420, 480),
-                C_BgPanel, C_BorderCyan, 1.5f);
+                new Vector2(0, 30), new Vector2(420, 480), C_BgPanel, C_BorderCyan, 1.5f);
 
-            // タイトル "ESCAPE"
             var titleTxt = CreateText(centerInner.transform, "TitleText", "ESCAPE",
                 new Vector2(0, 165), new Vector2(380, 100),
                 C_Cyan, 68, TextAnchor.MiddleCenter, bold: true);
             AddTextOutline(titleTxt, new Color(0f, 0.4f, 0.6f, 0.7f));
             AddTextShadow(titleTxt, new Color(0f, 0.5f, 0.8f, 0.5f));
 
-            // サブタイトル
             var subTxt = CreateText(centerInner.transform, "SubTitle", "〜  脱  出  ゲ  ー  ム  〜",
                 new Vector2(0, 110), new Vector2(380, 40),
                 C_TextSec, 18, TextAnchor.MiddleCenter);
             AddTextShadow(subTxt);
 
-            // 区切りライン
-            CreatePanel(centerInner.transform, "Divider",
-                new Vector2(0, 78), new Vector2(340, 1), C_CyanDim);
+            // 施設名
+            var facilityTxt = CreateText(centerInner.transform, "FacilityLabel", "NEXUS LABORATORY",
+                new Vector2(0, 84), new Vector2(380, 28),
+                new Color(C_Amber.r, C_Amber.g, C_Amber.b, 0.65f), 13, TextAnchor.MiddleCenter);
 
-            // ボタン群
+            CreatePanel(centerInner.transform, "Divider",
+                new Vector2(0, 68), new Vector2(340, 1), C_CyanDim);
+
             var mainMenu = canvas.gameObject.AddComponent<MainMenuUI>();
 
-            float btnY    = 40f;
+            float btnY    = 30f;
             float btnStep = 66f;
 
             var btnNewGame = CreateStyledButton(centerInner.transform, "NewGameButton", "▶  NEW GAME",
@@ -317,10 +345,7 @@ namespace EscapeGame.Editor
             GetBtnLabel(btnQuit).color = new Color(1f, 0.6f, 0.6f);
             btnQuit.onClick.AddListener(mainMenu.OnQuitClicked);
 
-            // 画面四隅 HUD
             BuildCornerHUD(ct, 55f, 2f);
-
-            // ExaminePanel
             BuildExaminePanel(ct);
 
             EditorSceneManager.SaveScene(scene, scenePath);
@@ -345,28 +370,37 @@ namespace EscapeGame.Editor
                 new Color(0.07f, 0.08f, 0.12f),
                 C_Cyan);
 
+            // ---- 入室ナレーション ----
+            BuildRoomNarrator(new[]
+            {
+                "...頭が痛い。\nここは...どこだ？ 記憶がない。\n名前も、過去も——何も思い出せない。",
+                "壁に沿って機械が並んでいる。\n研究施設、のようだ。\n...なぜ、ここにいる？"
+            }, initialDelay: 0.8f, lineInterval: 9.5f);
+
             // ---- ドア ----
             var door = BuildDoor("door_01", "R002_Corridor",
                 new Vector3(5f, 0.5f, 0), new Color(0.10f, 0.18f, 0.30f),
-                "ドアはロックされている。\n鍵を使わないと開かない。",
-                "カチャリ——！\nドアが開いた！");
+                "ドアは固く閉ざされている。\n鍵を使わないと開かない。",
+                "カチャリ——！\nドアが開いた！\n廊下の非常灯が赤く点滅している……");
             var doorSo = new SerializedObject(door);
             doorSo.FindProperty("requiredKey").objectReferenceValue = _itemWorkingKey;
             doorSo.ApplyModifiedPropertiesWithoutUndo();
             AddObjectFrame(door.gameObject, C_Cyan, 0.10f);
             AddWorldLabel(door.gameObject, "出口", new Vector3(0, 2.2f, 0));
 
-            // ---- IDカード Pickup（非表示、KeyBox解除後に出現） ----
+            // ---- IDカード Pickup（KeyBox解除後に出現） ----
             var idCardGo = BuildItemPickupGo("IDCardPickup",
                 new Vector3(1.5f, -2f, 0), new Color(0.55f, 0.65f, 0.20f),
-                new Vector3(0.8f, 0.5f, 1), _itemIdCard, "IDカード");
+                new Vector3(0.8f, 0.5f, 1), _itemIdCard, "IDカード",
+                pickupDesc: "金属製の小さなカード。\n「被験者 #0047」と印字されている。\n\n...0047、これが私の番号か。");
             idCardGo.SetActive(false);
 
             var keyboxSafeGo = new GameObject("KeyBoxSafe");
             var safe = keyboxSafeGo.AddComponent<SafeObject>();
             var safeSo = new SerializedObject(safe);
             safeSo.FindProperty("itemToReveal").objectReferenceValue   = idCardGo;
-            safeSo.FindProperty("unlockMessage").stringValue = "錠前が開いた！\nIDカードがあった！";
+            safeSo.FindProperty("unlockMessage").stringValue =
+                "錠前が外れた！\nIDカードが入っていた。\n「被験者 #0047」——これが私か。";
             safeSo.ApplyModifiedPropertiesWithoutUndo();
 
             BuildKeyBox(safe);
@@ -377,13 +411,19 @@ namespace EscapeGame.Editor
             // ---- 引き出し（錆びた鍵） ----
             var drawerGo = BuildItemPickupGo("Drawer",
                 new Vector3(-2.2f, -2.2f, 0), new Color(0.30f, 0.20f, 0.10f),
-                new Vector3(2f, 1f, 1), _itemRustyKey, "引き出し");
+                new Vector3(2f, 1f, 1), _itemRustyKey, "引き出し",
+                pickupDesc: "重い引き出し。長い間使われていなかったのか、錆びついている。\n" +
+                            "力を入れると、ゆっくり開いた。\n\n" +
+                            "中に古い鍵が一本——錆だらけで、このままでは使えそうもない。");
             AddObjectFrame(drawerGo, C_Amber, 0.07f);
 
             // ---- 薬棚（潤滑油） ----
             var medGo = BuildItemPickupGo("MedicineCabinet",
                 new Vector3(3f, 1.5f, 0), new Color(0.12f, 0.22f, 0.20f),
-                new Vector3(1.5f, 2f, 1), _itemOil, "薬棚");
+                new Vector3(1.5f, 2f, 1), _itemOil, "薬棚",
+                pickupDesc: "金属製の棚。医療品が整然と並んでいる。\n" +
+                            "一本の小瓶——「潤滑油」のラベル。\n\n" +
+                            "錆びた鍵に使えるかもしれない。");
             AddObjectFrame(medGo, C_Cyan, 0.07f);
 
             // ---- ストーリーログ #1 ----
@@ -396,6 +436,7 @@ namespace EscapeGame.Editor
             BuildHUDBar(canvas.transform);
             BuildExaminePanel(canvas.transform);
             BuildPuzzleUIPanel(canvas.transform);
+            BuildNarratorPanel(canvas.transform);
             BuildCornerHUD(canvas.transform, 45f, 1.5f);
 
             EditorSceneManager.SaveScene(scene, scenePath);
@@ -420,11 +461,18 @@ namespace EscapeGame.Editor
                 new Color(0.04f, 0.05f, 0.08f),
                 C_Amber);
 
+            // ---- 入室ナレーション ----
+            BuildRoomNarrator(new[]
+            {
+                "廊下に出た。\n非常灯が赤く点滅している——ARIAの警報だ。\nARIA...そう、この施設のAI。なぜ知っている？",
+                "記憶がない、はずなのに。\n名前が、浮かぶ。\n...「ARIA」。"
+            }, initialDelay: 0.8f, lineInterval: 9.5f);
+
             // ---- ドア（R003へ） ----
             var door = BuildDoor("door_02", "R003_LabA",
                 new Vector3(7f, 0.5f, 0), new Color(0.10f, 0.16f, 0.26f),
-                "配電盤を操作しないと開かない。",
-                "カチャリ——！\n電源が入り、ドアが開いた！");
+                "配電盤を操作しないと開かない。\nARIAがロックしている。",
+                "電源が入り直し、ドアが開いた——！\n先に進める！");
             AddObjectFrame(door.gameObject, C_Cyan, 0.10f);
             AddWorldLabel(door.gameObject, "出口", new Vector3(0, 2.2f, 0));
 
@@ -433,7 +481,8 @@ namespace EscapeGame.Editor
                 new Vector3(-4f, 0f, 0), new Color(0.15f, 0.17f, 0.20f),
                 new Vector3(2f, 3f, 1),
                 "fuse_seq", new[] { 3, 1, 2, 4 },
-                "配電盤。\nボタンを正しい順序で押せ。", door);
+                "施設の電力制御盤。\n1〜4のボタンが並んでいる。\n\n正しい順序で押せば、ドアが開くはずだ。",
+                door);
             AddObjectFrame(fusebox, C_Amber, 0.08f);
             AddWorldLabel(fusebox, "配電盤", new Vector3(0, 1.7f, 0));
 
@@ -444,19 +493,51 @@ namespace EscapeGame.Editor
             var diag   = diagramGo.AddComponent<ExaminableObject>();
             var diagSo = new SerializedObject(diag);
             diagSo.FindProperty("objectId").stringValue    = "circuit_01";
-            diagSo.FindProperty("examineText").stringValue = "回路図。\n「3→1→2→4の順に接続せよ」と書かれている。";
+            diagSo.FindProperty("examineText").stringValue =
+                "壁に貼り付けられた手書きの回路図。\n赤い文字で囲まれたメモ:\n\n" +
+                "　╔══════════════╗\n" +
+                "　║  緊急脱出プロトコル Ω   ║\n" +
+                "　║  電力回路接続順序:      ║\n" +
+                "　║    3 → 1 → 2 → 4   ║\n" +
+                "　║          (山田博士)   ║\n" +
+                "　╚══════════════╝\n\n" +
+                "...山田博士が万が一の時のために仕込んでいたのか。";
             diagSo.ApplyModifiedPropertiesWithoutUndo();
             AddObjectFrame(diagramGo, C_Amber, 0.06f);
             AddWorldLabel(diagramGo, "回路図", new Vector3(0, 0.7f, 0));
 
+            // ---- ARIAターミナル（新規） ----
+            var ariaTermGo = CreateQuad("ARIA_Terminal",
+                new Vector3(2f, 0.8f, 0), new Vector3(1.8f, 1.2f, 1), new Color(0.06f, 0.10f, 0.18f));
+            ariaTermGo.AddComponent<BoxCollider2D>();
+            var ariaTerm   = ariaTermGo.AddComponent<ExaminableObject>();
+            var ariaTermSo = new SerializedObject(ariaTerm);
+            ariaTermSo.FindProperty("objectId").stringValue    = "aria_terminal_r002";
+            ariaTermSo.FindProperty("examineText").stringValue =
+                "壁に埋め込まれた端末。ARIAのシステムが動いている。\n\n" +
+                "　╔════════════════════╗\n" +
+                "　║  ARIA SYSTEM v7.2.1       ║\n" +
+                "　║  ステータス : LOCKDOWN     ║\n" +
+                "　║  ─────────────────║\n" +
+                "　║  > 被験者 #0047           ║\n" +
+                "　║  > 覚醒を確認。           ║\n" +
+                "　║  > 想定外のパターンだ。   ║\n" +
+                "　║  > ...プロトコルに従え。  ║\n" +
+                "　╚════════════════════╝\n\n" +
+                "...ARIAが私に語りかけている？";
+            ariaTermSo.ApplyModifiedPropertiesWithoutUndo();
+            AddObjectFrame(ariaTermGo, C_Cyan, 0.06f);
+            AddWorldLabel(ariaTermGo, "ARIAシステム", new Vector3(0, 0.8f, 0));
+
             // ---- 工具箱 ----
             var toolboxGo = BuildItemPickupGo("Toolbox",
-                new Vector3(2f, -2f, 0), new Color(0.28f, 0.20f, 0.10f),
-                new Vector3(1.8f, 1f, 1), _itemScrewdriver, "工具箱");
+                new Vector3(4.5f, -2f, 0), new Color(0.28f, 0.20f, 0.10f),
+                new Vector3(1.8f, 1f, 1), _itemScrewdriver, "工具箱",
+                pickupDesc: "保守作業員のものらしい工具箱。\nドライバーが一本入っている。\n\n後で使えるかもしれない。");
             AddObjectFrame(toolboxGo, C_Amber, 0.07f);
 
             // ---- ストーリーログ #2 ----
-            BuildStoryLog("StoryLog_002", new Vector3(4f, -1f, 0),
+            BuildStoryLog("StoryLog_002", new Vector3(4f, 2f, 0),
                 new Color(0.20f, 0.18f, 0.12f), _log002, "手紙");
 
             // ---- UI ----
@@ -465,6 +546,7 @@ namespace EscapeGame.Editor
             BuildHUDBar(canvas.transform);
             BuildExaminePanel(canvas.transform);
             BuildSequencePuzzleUIPanel(canvas.transform);
+            BuildNarratorPanel(canvas.transform);
             BuildCornerHUD(canvas.transform, 45f, 1.5f);
 
             EditorSceneManager.SaveScene(scene, scenePath);
@@ -489,10 +571,18 @@ namespace EscapeGame.Editor
                 new Color(0.03f, 0.06f, 0.09f),
                 C_Cyan);
 
+            // ---- 入室ナレーション ----
+            BuildRoomNarrator(new[]
+            {
+                "研究室......。\nここで、私は何をされた？\nモニターがまだ動いている。ARIAの気配がする。",
+                "記憶が——断片的に戻ってくる。\nベッド。電極。光。声。\n「大丈夫だ、すぐ終わる」"
+            }, initialDelay: 0.8f, lineInterval: 9.5f);
+
             // ---- 最終鍵のPickup（セーフ解除後に出現） ----
             var finalKeyGo = BuildItemPickupGo("FinalKeyPickup",
                 new Vector3(0f, -1.5f, 0), new Color(0.6f, 0.55f, 0.05f),
-                new Vector3(0.7f, 0.4f, 1), _itemFinalKey, "最終の鍵");
+                new Vector3(0.7f, 0.4f, 1), _itemFinalKey, "最終の鍵",
+                pickupDesc: "重厚な金属製の鍵。\nARIAのシールが貼られている。\n\nこれで——出られる。");
             finalKeyGo.SetActive(false);
 
             // ---- セーフ ----
@@ -502,7 +592,8 @@ namespace EscapeGame.Editor
             var safeObj   = safeGo.AddComponent<SafeObject>();
             var safeObjSo = new SerializedObject(safeObj);
             safeObjSo.FindProperty("itemToReveal").objectReferenceValue = finalKeyGo;
-            safeObjSo.FindProperty("unlockMessage").stringValue = "セーフが開いた！\n最終の鍵が見つかった！";
+            safeObjSo.FindProperty("unlockMessage").stringValue =
+                "セーフが開いた——！\n最終の鍵が見つかった！\n...ARIAが、許可してくれた。";
             safeObjSo.ApplyModifiedPropertiesWithoutUndo();
             AddObjectFrame(safeGo, C_Amber, 0.08f);
             AddWorldLabel(safeGo, "セーフ", new Vector3(0, 1f, 0));
@@ -512,31 +603,57 @@ namespace EscapeGame.Editor
                 new Vector3(-4f, 0f, 0), new Color(0.10f, 0.12f, 0.18f),
                 new Vector3(2f, 3f, 1),
                 "r003_color", new[] { "Blue", "Red", "Yellow" },
-                "色パネル。\n正しい順序で色を選べ。", safeObj);
+                "ARIAの制御インターフェース。\n色を正しい順序で選択すると、\nARIAがスタンバイモードに移行する。\n\n色見本の順序を思い出せ。",
+                safeObj);
             AddObjectFrame(colorPanel, C_Cyan, 0.08f);
-            AddWorldLabel(colorPanel, "色パネル", new Vector3(0, 1.7f, 0));
+            AddWorldLabel(colorPanel, "ARIAパネル", new Vector3(0, 1.7f, 0));
 
-            // ---- 色見本 ----
+            // ---- 色見本表 ----
             var chartGo = CreateQuad("ColorChart",
                 new Vector3(2f, 1f, 0), new Vector3(1.5f, 1f, 1), new Color(0.14f, 0.16f, 0.14f));
             chartGo.AddComponent<BoxCollider2D>();
             var chart   = chartGo.AddComponent<ExaminableObject>();
             var chartSo = new SerializedObject(chart);
             chartSo.FindProperty("objectId").stringValue    = "colorchart_01";
-            chartSo.FindProperty("examineText").stringValue = "色見本表。\n「青 → 赤 → 黄」の順と書かれている。";
+            chartSo.FindProperty("examineText").stringValue =
+                "ARIAのアラートシステムを示す色見本表:\n\n" +
+                "　■ 青  ───  平常運転  (NORMAL)\n" +
+                "　■ 赤  ───  警告モード (WARNING)\n" +
+                "　■ 黄  ───  待機モード (STANDBY)\n\n" +
+                "　★ 待機モード移行手順: 青 → 赤 → 黄\n\n" +
+                "ARIAを待機状態にすれば、セーフが開くかもしれない。";
             chartSo.ApplyModifiedPropertiesWithoutUndo();
             AddObjectFrame(chartGo, C_Cyan, 0.06f);
-            AddWorldLabel(chartGo, "色見本", new Vector3(0, 0.7f, 0));
+            AddWorldLabel(chartGo, "ARIAカラーチャート", new Vector3(0, 0.7f, 0));
+
+            // ---- 研究記録端末（新規） ----
+            var researchTermGo = CreateQuad("ResearchTerminal",
+                new Vector3(5f, 1f, 0), new Vector3(1.8f, 1.2f, 1), new Color(0.06f, 0.10f, 0.18f));
+            researchTermGo.AddComponent<BoxCollider2D>();
+            var resTerm   = researchTermGo.AddComponent<ExaminableObject>();
+            var resTermSo = new SerializedObject(resTerm);
+            resTermSo.FindProperty("objectId").stringValue    = "research_terminal";
+            resTermSo.FindProperty("examineText").stringValue =
+                "研究室のメインコンピューター。\n被験者の記録が表示されている。\n\n" +
+                "　[ 被験者 #0047 — 実験記録 ]\n" +
+                "　認知拡張率   : +340%\n" +
+                "　記憶封鎖     : 完了\n" +
+                "　ARIA神経同期 : 87.3%\n" +
+                "　最終更新     : 実験 Day 92\n\n" +
+                "......記憶封鎖？\n私の記憶はARIAに封じられているのか。";
+            resTermSo.ApplyModifiedPropertiesWithoutUndo();
+            AddObjectFrame(researchTermGo, C_Cyan, 0.06f);
+            AddWorldLabel(researchTermGo, "研究記録", new Vector3(0, 0.8f, 0));
 
             // ---- ストーリーログ #3 ----
-            BuildStoryLog("StoryLog_003", new Vector3(4.5f, 0f, 0),
+            BuildStoryLog("StoryLog_003", new Vector3(4.5f, -1f, 0),
                 new Color(0.18f, 0.20f, 0.25f), _log003, "記録");
 
             // ---- 出口ドア ----
             var exitDoor   = BuildDoor("door_03", "",
                 new Vector3(7f, 0.5f, 0), new Color(0.10f, 0.20f, 0.32f),
-                "ここを開けるには鍵が必要だ。",
-                "光が差し込んできた……！");
+                "最終の鍵が必要だ。\nセーフを開けなければ。",
+                "鍵が回った——！\n光が、外の空気が——！\n自由だ……！");
             var exitDoorSo = new SerializedObject(exitDoor);
             exitDoorSo.FindProperty("requiredKey").objectReferenceValue = _itemFinalKey;
             exitDoorSo.FindProperty("triggerEnding").boolValue          = true;
@@ -550,6 +667,7 @@ namespace EscapeGame.Editor
             BuildHUDBar(canvas.transform);
             BuildExaminePanel(canvas.transform);
             BuildColorPuzzleUIPanel(canvas.transform);
+            BuildNarratorPanel(canvas.transform);
             BuildCornerHUD(canvas.transform, 45f, 1.5f);
 
             EditorSceneManager.SaveScene(scene, scenePath);
@@ -584,12 +702,10 @@ namespace EscapeGame.Editor
             canvas.sortingOrder = 10;
             var ct = canvas.transform;
 
-            // 背景
             var bg = CreatePanel(ct, "Background", Vector2.zero, new Vector2(1920, 1080),
                 isTrueEnding ? new Color(0.03f, 0.06f, 0.12f) : new Color(0.08f, 0.05f, 0.03f));
             SetStretch(bg);
 
-            // 放射状グロー演出（中央の輝き）
             Color glowColor = isTrueEnding ? new Color(0.00f, 0.60f, 0.80f, 0.08f) : new Color(0.70f, 0.45f, 0.00f, 0.08f);
             for (int i = 3; i >= 1; i--)
             {
@@ -597,10 +713,8 @@ namespace EscapeGame.Editor
                 SetAnchorCenter(glow);
             }
 
-            // タイプ別アクセントカラー
             Color accentColor = isTrueEnding ? C_Cyan : C_Amber;
 
-            // 上部ライン
             var topLine = CreatePanel(ct, "TopLine", Vector2.zero, new Vector2(0, 2),
                 new Color(accentColor.r, accentColor.g, accentColor.b, 0.8f));
             SetAnchorStretchH(topLine, 1, 1, 0);
@@ -608,45 +722,50 @@ namespace EscapeGame.Editor
                 new Color(accentColor.r, accentColor.g, accentColor.b, 0.8f));
             SetAnchorStretchH(botLine, 0, 0, 0);
 
-            // タイトル
             var titleLabel = isTrueEnding ? "◆  TRUE ENDING  ◆" : "NORMAL ENDING";
             var titleTxt   = CreateText(ct, "EndingTitle", titleLabel,
-                new Vector2(0, 160), new Vector2(800, 90),
+                new Vector2(0, 170), new Vector2(800, 90),
                 accentColor, 52, TextAnchor.MiddleCenter, bold: true);
             SetAnchorCenter(titleTxt.gameObject);
             AddTextOutline(titleTxt, new Color(accentColor.r, accentColor.g, accentColor.b, 0.5f));
             AddTextShadow(titleTxt, new Color(accentColor.r, accentColor.g, accentColor.b, 0.4f));
 
-            // 区切りライン
+            // サブタイトル（True Endingのみ）
+            if (isTrueEnding)
+            {
+                var sub = CreateText(ct, "SubTitle", "— 全ての真実を掴んだ者へ —",
+                    new Vector2(0, 118), new Vector2(700, 34),
+                    new Color(accentColor.r, accentColor.g, accentColor.b, 0.65f),
+                    17, TextAnchor.MiddleCenter);
+                SetAnchorCenter(sub.gameObject);
+            }
+
             var divider = CreatePanel(ct, "Divider",
-                new Vector2(0, 110), new Vector2(600, 1),
+                new Vector2(0, isTrueEnding ? 96 : 118), new Vector2(600, 1),
                 new Color(accentColor.r, accentColor.g, accentColor.b, 0.5f));
             SetAnchorCenter(divider);
 
-            // エンディングテキスト（EndingUI が書き換える）
             var endingTextGo = new GameObject("EndingText");
             endingTextGo.transform.SetParent(ct, false);
             var endingTxt        = endingTextGo.AddComponent<Text>();
-            endingTxt.fontSize   = 26;
+            endingTxt.fontSize   = 24;
             endingTxt.color      = C_TextPri;
             endingTxt.alignment  = TextAnchor.MiddleCenter;
-            endingTxt.lineSpacing = 1.4f;
+            endingTxt.lineSpacing = 1.5f;
             var ert = endingTextGo.GetComponent<RectTransform>();
             ert.anchorMin        = new Vector2(0.5f, 0.5f);
             ert.anchorMax        = new Vector2(0.5f, 0.5f);
             ert.pivot            = new Vector2(0.5f, 0.5f);
-            ert.anchoredPosition = new Vector2(0, 30);
-            ert.sizeDelta        = new Vector2(700, 180);
+            ert.anchoredPosition = new Vector2(0, 20);
+            ert.sizeDelta        = new Vector2(700, 220);
             AddTextShadow(endingTxt, new Color(accentColor.r, accentColor.g, accentColor.b, 0.35f));
 
-            // メニューボタン
             var menuBtn = CreateStyledButton(ct, "MenuButton", "メインメニューへ",
-                new Vector2(0, -130), new Vector2(300, 54),
+                new Vector2(0, -140), new Vector2(300, 54),
                 C_BtnNorm, C_BorderCyan);
             GetBtnLabel(menuBtn).color = C_TextPri;
             SetAnchorCenter(menuBtn.gameObject);
 
-            // EndingUI
             var endingUIGo = new GameObject("EndingUI");
             endingUIGo.transform.SetParent(ct, false);
             var endingUI = endingUIGo.AddComponent<EndingUI>();
@@ -760,23 +879,35 @@ namespace EscapeGame.Editor
         }
 
         // ----------------------------------------------------------------
-        //  Science 背景（壁・床・装飾ライン）
+        //  入室ナレーター
+        // ----------------------------------------------------------------
+        private static void BuildRoomNarrator(string[] lines, float initialDelay = 0.8f, float lineInterval = 9f)
+        {
+            var go = new GameObject("RoomNarrator");
+            var rn = go.AddComponent<RoomNarrator>();
+            var so = new SerializedObject(rn);
+            var linesProp = so.FindProperty("lines");
+            linesProp.arraySize = lines.Length;
+            for (int i = 0; i < lines.Length; i++)
+                linesProp.GetArrayElementAtIndex(i).stringValue = lines[i];
+            so.FindProperty("initialDelay").floatValue = initialDelay;
+            so.FindProperty("lineInterval").floatValue = lineInterval;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // ----------------------------------------------------------------
+        //  Science 背景
         // ----------------------------------------------------------------
         private static void BuildScienceBackground(
             string roomName, Color wallColor, Color floorColor, Color accentColor)
         {
-            // 壁
-            CreateQuad("BG_Wall", new Vector3(0, 0.5f, 2f), new Vector3(24, 12, 1), wallColor);
-
-            // 床
+            CreateQuad("BG_Wall",  new Vector3(0, 0.5f, 2f),  new Vector3(24, 12, 1), wallColor);
             CreateQuad("BG_Floor", new Vector3(0, -4f, 1.8f), new Vector3(24, 4.5f, 1), floorColor);
 
-            // 床/壁の境界ライン（アクセント）
             CreateQuad("BG_FloorLine", new Vector3(0, -1.85f, 1.7f),
                 new Vector3(24, 0.035f, 1),
                 new Color(accentColor.r, accentColor.g, accentColor.b, 0.70f));
 
-            // 壁パネルの縦縫い目
             for (int i = -4; i <= 4; i++)
             {
                 CreateQuad($"BG_Seam_{i}",
@@ -785,17 +916,14 @@ namespace EscapeGame.Editor
                     new Color(accentColor.r, accentColor.g, accentColor.b, 0.09f));
             }
 
-            // 天井グロー（アクセントカラーの淡い発光）
             CreateQuad("BG_CeilGlow", new Vector3(0, 5.0f, 1.6f),
                 new Vector3(24, 1.0f, 1),
                 new Color(accentColor.r, accentColor.g, accentColor.b, 0.06f));
 
-            // 天井ライン
             CreateQuad("BG_CeilLine", new Vector3(0, 5.3f, 1.55f),
                 new Vector3(24, 0.035f, 1),
                 new Color(accentColor.r, accentColor.g, accentColor.b, 0.45f));
 
-            // 床グリッドライン（水平）
             for (int i = 0; i < 4; i++)
             {
                 float y = -2.4f - i * 0.5f;
@@ -805,7 +933,6 @@ namespace EscapeGame.Editor
                     new Color(accentColor.r, accentColor.g, accentColor.b, 0.04f));
             }
 
-            // 部屋ラベル（ワールドスペース）
             var canvas = BuildCanvas("RoomLabelCanvas", RenderMode.WorldSpace, 0);
             canvas.GetComponent<RectTransform>().localScale = Vector3.one * 0.01f;
             canvas.transform.position = new Vector3(-8f, 4.4f, 0.5f);
@@ -832,18 +959,15 @@ namespace EscapeGame.Editor
             Vector2 anchor, Vector2 pivot, int signX, int signY, float len, float thick, Color c)
         {
             float margin = 18f;
-
-            // 水平ライン
-            var h    = CreatePanel(parent, $"HUD_{id}_H", Vector2.zero, new Vector2(len, thick), c);
-            var hrt  = h.GetComponent<RectTransform>();
+            var h   = CreatePanel(parent, $"HUD_{id}_H", Vector2.zero, new Vector2(len, thick), c);
+            var hrt = h.GetComponent<RectTransform>();
             hrt.anchorMin        = anchor;
             hrt.anchorMax        = anchor;
             hrt.pivot            = new Vector2(signX > 0 ? 0 : 1, signY > 0 ? 0 : 1);
             hrt.anchoredPosition = new Vector2(signX * margin, signY * margin);
 
-            // 垂直ライン
-            var v    = CreatePanel(parent, $"HUD_{id}_V", Vector2.zero, new Vector2(thick, len), c);
-            var vrt  = v.GetComponent<RectTransform>();
+            var v   = CreatePanel(parent, $"HUD_{id}_V", Vector2.zero, new Vector2(thick, len), c);
+            var vrt = v.GetComponent<RectTransform>();
             vrt.anchorMin        = anchor;
             vrt.anchorMax        = anchor;
             vrt.pivot            = new Vector2(signX > 0 ? 0 : 1, signY > 0 ? 0 : 1);
@@ -881,7 +1005,15 @@ namespace EscapeGame.Editor
             var so         = new SerializedObject(examinable);
             so.FindProperty("objectId").stringValue    = "shelf_01";
             so.FindProperty("examineText").stringValue =
-                "古びた本棚。\n本がぎっしりと詰まっている。\n\nふと、一冊の本に挟まったメモが目に入った。\n\n　『 1 2 3 4 』\n\n何かの暗号だろうか……";
+                "古びた本棚。学術書がぎっしり並んでいる。\n" +
+                "...一冊の間に、手書きのメモが挟まっている。\n\n" +
+                "　┌───────────────────┐\n" +
+                "　│  安全確認コード（第一段階テスト）  │\n" +
+                "　│                                 │\n" +
+                "　│           1 - 2 - 3 - 4         │\n" +
+                "　│                      山田 健二  │\n" +
+                "　└───────────────────┘\n\n" +
+                "山田......この施設の研究者が書いたのか。";
             so.ApplyModifiedPropertiesWithoutUndo();
             AddObjectFrame(go, C_Amber, 0.08f);
             AddWorldLabel(go, "本棚", new Vector3(0, 2f, 0));
@@ -917,7 +1049,9 @@ namespace EscapeGame.Editor
             var container = go.AddComponent<PuzzleContainer>();
             var cso       = new SerializedObject(container);
             cso.FindProperty("objectId").stringValue            = "keybox_01";
-            cso.FindProperty("examineText").stringValue         = "4桁の暗号ロック。\n番号を入力すれば開くはずだ。";
+            cso.FindProperty("examineText").stringValue         =
+                "4桁の暗号ロック。金属製の小さな箱。\n番号を入力すれば開くはずだ。\n\n" +
+                "......本棚のメモが頭をよぎる。";
             cso.FindProperty("puzzle").objectReferenceValue     = puzzle;
             cso.ApplyModifiedPropertiesWithoutUndo();
 
@@ -929,27 +1063,19 @@ namespace EscapeGame.Editor
         //  ItemPickup オブジェクト生成
         // ----------------------------------------------------------------
         private static GameObject BuildItemPickupGo(string name, Vector3 pos, Color color,
-            Vector3 scale, ItemData itemData, string label)
+            Vector3 scale, ItemData itemData, string label, string pickupDesc = null)
         {
             var go     = CreateQuad(name, pos, scale, color);
             go.AddComponent<BoxCollider2D>();
             var pickup = go.AddComponent<ItemPickup>();
             var pso    = new SerializedObject(pickup);
-            pso.FindProperty("objectId").stringValue            = name.ToLower();
-            pso.FindProperty("itemData").objectReferenceValue   = itemData;
+            pso.FindProperty("objectId").stringValue          = name.ToLower();
+            pso.FindProperty("itemData").objectReferenceValue = itemData;
+            if (!string.IsNullOrEmpty(pickupDesc))
+                pso.FindProperty("pickupDescription").stringValue = pickupDesc;
             pso.ApplyModifiedPropertiesWithoutUndo();
             AddWorldLabel(go, label, new Vector3(0, scale.y * 0.6f, 0));
             return go;
-        }
-
-        // ---- ExaminableObject の objectId を設定 ----
-        private static void AddExaminable(GameObject go, string objId, string text)
-        {
-            var pickup = go.GetComponent<ItemPickup>();
-            if (pickup == null) return;
-            var pso = new SerializedObject(pickup);
-            pso.FindProperty("objectId").stringValue = objId;
-            pso.ApplyModifiedPropertiesWithoutUndo();
         }
 
         // ----------------------------------------------------------------
@@ -984,9 +1110,9 @@ namespace EscapeGame.Editor
 
             var container = go.AddComponent<PuzzleContainer>();
             var cso       = new SerializedObject(container);
-            cso.FindProperty("objectId").stringValue            = name.ToLower();
-            cso.FindProperty("examineText").stringValue         = examineText;
-            cso.FindProperty("puzzle").objectReferenceValue     = puzzle;
+            cso.FindProperty("objectId").stringValue        = name.ToLower();
+            cso.FindProperty("examineText").stringValue     = examineText;
+            cso.FindProperty("puzzle").objectReferenceValue = puzzle;
             cso.ApplyModifiedPropertiesWithoutUndo();
             return go;
         }
@@ -1023,9 +1149,9 @@ namespace EscapeGame.Editor
 
             var container = go.AddComponent<PuzzleContainer>();
             var cso       = new SerializedObject(container);
-            cso.FindProperty("objectId").stringValue            = name.ToLower();
-            cso.FindProperty("examineText").stringValue         = examineText;
-            cso.FindProperty("puzzle").objectReferenceValue     = puzzle;
+            cso.FindProperty("objectId").stringValue        = name.ToLower();
+            cso.FindProperty("examineText").stringValue     = examineText;
+            cso.FindProperty("puzzle").objectReferenceValue = puzzle;
             cso.ApplyModifiedPropertiesWithoutUndo();
             return go;
         }
@@ -1036,12 +1162,12 @@ namespace EscapeGame.Editor
         private static void BuildStoryLog(string name, Vector3 pos, Color color,
             StoryLogData logData, string label)
         {
-            var go   = CreateQuad(name, pos, new Vector3(1f, 1.5f, 1), color);
+            var go  = CreateQuad(name, pos, new Vector3(1f, 1.5f, 1), color);
             go.AddComponent<BoxCollider2D>();
-            var sl   = go.AddComponent<StoryLogObject>();
-            var sso  = new SerializedObject(sl);
-            sso.FindProperty("objectId").stringValue          = name.ToLower();
-            sso.FindProperty("logData").objectReferenceValue  = logData;
+            var sl  = go.AddComponent<StoryLogObject>();
+            var sso = new SerializedObject(sl);
+            sso.FindProperty("objectId").stringValue         = name.ToLower();
+            sso.FindProperty("logData").objectReferenceValue = logData;
             sso.ApplyModifiedPropertiesWithoutUndo();
             AddObjectFrame(go, C_Amber, 0.06f);
             AddWorldLabel(go, label, new Vector3(0, 1f, 0));
@@ -1052,7 +1178,6 @@ namespace EscapeGame.Editor
         // ================================================================
         private static void BuildHUDBar(Transform parent)
         {
-            // 下部バー（縁取り付き）
             var (barOuter, barInner) = CreateStyledPanel(parent, "HUDBar",
                 Vector2.zero, new Vector2(0, 90),
                 new Color(0.04f, 0.06f, 0.12f, 0.97f), C_BorderCyan, 1.5f);
@@ -1063,7 +1188,6 @@ namespace EscapeGame.Editor
             barRt.anchoredPosition = new Vector2(0, 0);
             barRt.sizeDelta        = new Vector2(0, 90);
 
-            // インベントリバー
             var invBarGo = new GameObject("InventoryBar", typeof(RectTransform));
             invBarGo.transform.SetParent(barInner.transform, false);
             var invRt = (RectTransform)invBarGo.transform;
@@ -1077,7 +1201,6 @@ namespace EscapeGame.Editor
             hlg.childControlHeight     = false;
             hlg.childControlWidth      = false;
 
-            // メニューボタン
             var menuBtn = CreateStyledButton(barInner.transform, "MenuButton", "MENU",
                 Vector2.zero, new Vector2(100, 44), C_BtnNorm, C_BorderCyan);
             GetBtnLabel(menuBtn).fontSize = 16;
@@ -1088,7 +1211,6 @@ namespace EscapeGame.Editor
             menuRt.pivot            = new Vector2(1, 0.5f);
             menuRt.anchoredPosition = new Vector2(-12, 0);
 
-            // ItemSlot Prefab
             var slotPrefab = CreateItemSlotPrefab();
             var hudGo      = new GameObject("HUDController");
             hudGo.transform.SetParent(barInner.transform, false);
@@ -1101,12 +1223,13 @@ namespace EscapeGame.Editor
         }
 
         // ================================================================
-        //  ExaminePanel
+        //  ExaminePanel（タイトルText付き）
         // ================================================================
         private static ExaminePanel BuildExaminePanel(Transform parent)
         {
+            // パネル本体（高さ160：タイトル行 + 本文）
             var (panelOuter, panelInner) = CreateStyledPanel(parent, "ExaminePanel",
-                Vector2.zero, new Vector2(860, 120),
+                Vector2.zero, new Vector2(860, 160),
                 C_BgPanelDark, C_BorderCyan, 1.5f);
             var prt = panelOuter.GetComponent<RectTransform>();
             prt.anchorMin        = new Vector2(0.5f, 0);
@@ -1114,29 +1237,104 @@ namespace EscapeGame.Editor
             prt.pivot            = new Vector2(0.5f, 0);
             prt.anchoredPosition = new Vector2(0, 98);
 
-            var txtGo = new GameObject("MessageText");
-            txtGo.transform.SetParent(panelInner.transform, false);
-            var txt = txtGo.AddComponent<Text>();
-            txt.text        = "";
-            txt.fontSize    = 20;
-            txt.color       = C_TextPri;
-            txt.alignment   = TextAnchor.MiddleCenter;
-            txt.lineSpacing = 1.3f;
-            AddTextShadow(txt);
-            var trt = txtGo.GetComponent<RectTransform>();
-            trt.anchorMin  = Vector2.zero;
-            trt.anchorMax  = Vector2.one;
-            trt.offsetMin  = new Vector2(20, 8);
-            trt.offsetMax  = new Vector2(-20, -8);
+            // タイトルテキスト（上部、ログ調査時のみ表示）
+            var titleGo = new GameObject("TitleText");
+            titleGo.transform.SetParent(panelInner.transform, false);
+            var titleTxt = titleGo.AddComponent<Text>();
+            titleTxt.text        = "";
+            titleTxt.fontSize    = 14;
+            titleTxt.color       = C_Amber;
+            titleTxt.alignment   = TextAnchor.UpperLeft;
+            titleTxt.fontStyle   = FontStyle.Bold;
+            AddTextShadow(titleTxt, new Color(C_Amber.r, C_Amber.g, C_Amber.b, 0.4f));
+            var trt = titleGo.GetComponent<RectTransform>();
+            trt.anchorMin        = new Vector2(0, 1);
+            trt.anchorMax        = new Vector2(1, 1);
+            trt.pivot            = new Vector2(0.5f, 1);
+            trt.anchoredPosition = new Vector2(0, -6);
+            trt.sizeDelta        = new Vector2(-40, 22);
+            titleGo.SetActive(false);
+
+            // 仕切りライン（タイトルがある時のみ実質的に見える）
+            var dividerGo = CreatePanel(panelInner.transform, "TitleDivider",
+                new Vector2(0, 0), new Vector2(0, 1),
+                new Color(C_Amber.r, C_Amber.g, C_Amber.b, 0.35f));
+            var divRt = dividerGo.GetComponent<RectTransform>();
+            divRt.anchorMin  = new Vector2(0, 1);
+            divRt.anchorMax  = new Vector2(1, 1);
+            divRt.pivot      = new Vector2(0.5f, 1);
+            divRt.sizeDelta  = new Vector2(-40, 1);
+            divRt.anchoredPosition = new Vector2(0, -30);
+
+            // 本文テキスト
+            var msgGo = new GameObject("MessageText");
+            msgGo.transform.SetParent(panelInner.transform, false);
+            var msgTxt = msgGo.AddComponent<Text>();
+            msgTxt.text        = "";
+            msgTxt.fontSize    = 19;
+            msgTxt.color       = C_TextPri;
+            msgTxt.alignment   = TextAnchor.MiddleCenter;
+            msgTxt.lineSpacing = 1.3f;
+            AddTextShadow(msgTxt);
+            var mrt = msgGo.GetComponent<RectTransform>();
+            mrt.anchorMin  = Vector2.zero;
+            mrt.anchorMax  = Vector2.one;
+            mrt.offsetMin  = new Vector2(20, 8);
+            mrt.offsetMax  = new Vector2(-20, -8);
 
             panelOuter.SetActive(false);
 
-            var ep   = panelOuter.transform.parent.gameObject.AddComponent<ExaminePanel>();
-            var so   = new SerializedObject(ep);
+            var ep = panelOuter.transform.parent.gameObject.AddComponent<ExaminePanel>();
+            var so = new SerializedObject(ep);
             so.FindProperty("panel").objectReferenceValue       = panelOuter;
-            so.FindProperty("messageText").objectReferenceValue = txt;
+            so.FindProperty("titleText").objectReferenceValue   = titleTxt;
+            so.FindProperty("messageText").objectReferenceValue = msgTxt;
             so.ApplyModifiedPropertiesWithoutUndo();
             return ep;
+        }
+
+        // ================================================================
+        //  NarratorPanel（上部自動フェード帯）
+        // ================================================================
+        private static NarratorPanel BuildNarratorPanel(Transform parent)
+        {
+            // オーバーレイ不要: 直接パネルを上部中央に配置
+            var (panelOuter, panelInner) = CreateStyledPanel(parent, "NarratorPanel",
+                new Vector2(0, -20), new Vector2(900, 74),
+                new Color(0.03f, 0.04f, 0.10f, 0.88f),
+                new Color(C_CyanDim.r, C_CyanDim.g, C_CyanDim.b, 0.55f), 1f);
+            var prt = panelOuter.GetComponent<RectTransform>();
+            prt.anchorMin        = new Vector2(0.5f, 1);
+            prt.anchorMax        = new Vector2(0.5f, 1);
+            prt.pivot            = new Vector2(0.5f, 1);
+            prt.anchoredPosition = new Vector2(0, -20);
+
+            var txtGo = new GameObject("NarratorText");
+            txtGo.transform.SetParent(panelInner.transform, false);
+            var txt = txtGo.AddComponent<Text>();
+            txt.text        = "";
+            txt.fontSize    = 18;
+            txt.color       = new Color(0.78f, 0.90f, 0.96f, 0.95f);
+            txt.alignment   = TextAnchor.MiddleCenter;
+            txt.fontStyle   = FontStyle.Italic;
+            txt.lineSpacing = 1.25f;
+            AddTextShadow(txt, new Color(0f, 0.35f, 0.55f, 0.6f));
+            var trt = txtGo.GetComponent<RectTransform>();
+            trt.anchorMin  = Vector2.zero;
+            trt.anchorMax  = Vector2.one;
+            trt.offsetMin  = new Vector2(18, 6);
+            trt.offsetMax  = new Vector2(-18, -6);
+
+            panelOuter.SetActive(false);
+
+            var npGo = new GameObject("NarratorPanel");
+            npGo.transform.SetParent(parent, false);
+            var np   = npGo.AddComponent<NarratorPanel>();
+            var so   = new SerializedObject(np);
+            so.FindProperty("panel").objectReferenceValue        = panelOuter;
+            so.FindProperty("narratorText").objectReferenceValue = txt;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            return np;
         }
 
         // ================================================================
@@ -1144,26 +1342,21 @@ namespace EscapeGame.Editor
         // ================================================================
         private static void BuildPuzzleUIPanel(Transform parent)
         {
-            // オーバーレイ
             var overlay = CreatePanel(parent, "PuzzleOverlay", Vector2.zero, Vector2.zero,
                 new Color(0, 0, 0, 0.75f));
             SetStretch(overlay);
 
-            // パネル本体（縁取り付き）
             var (panelOuter, panelInner) = CreateStyledPanel(overlay.transform, "PuzzlePanel",
                 Vector2.zero, new Vector2(360, 480), C_BgPanel, C_BorderCyan, 2f);
             SetAnchorCenter(panelOuter);
 
-            // タイトル
             var titleTxt = CreateText(panelInner.transform, "TitleText", "■  暗号ロック",
                 new Vector2(0, 188), new Vector2(330, 48), C_Cyan, 22, TextAnchor.MiddleCenter, bold: true);
             AddTextShadow(titleTxt, C_CyanGlow);
 
-            // タイトル下ライン
             CreatePanel(panelInner.transform, "TitleLine",
                 new Vector2(0, 162), new Vector2(300, 1), C_CyanDim);
 
-            // 表示テキスト
             var dispGo  = new GameObject("DisplayText");
             dispGo.transform.SetParent(panelInner.transform, false);
             var dispTxt = dispGo.AddComponent<Text>();
@@ -1177,7 +1370,6 @@ namespace EscapeGame.Editor
             drt.anchoredPosition = new Vector2(0, 120);
             drt.sizeDelta        = new Vector2(310, 60);
 
-            // キーパッドグリッド
             var keypadGo = new GameObject("Keypad");
             keypadGo.transform.SetParent(panelInner.transform, false);
             var grid = keypadGo.AddComponent<GridLayoutGroup>();
@@ -1210,7 +1402,7 @@ namespace EscapeGame.Editor
                 GetBtnLabel(btn).color    = d >= 0 ? C_TextPri : new Color(1f, 0.6f, 0.6f);
                 GetBtnLabel(btn).fontSize = 22;
                 var digit = d;
-                if (digit >= 0)      btn.onClick.AddListener(() => pui.OnDigitButtonClicked(digit));
+                if (digit >= 0)       btn.onClick.AddListener(() => pui.OnDigitButtonClicked(digit));
                 else if (digit == -1) btn.onClick.AddListener(pui.OnDeleteButtonClicked);
                 else                  btn.onClick.AddListener(pui.OnClearButtonClicked);
             }
@@ -1223,7 +1415,7 @@ namespace EscapeGame.Editor
         }
 
         // ================================================================
-        //  SequencePuzzleUIPanel（4ボタン）
+        //  SequencePuzzleUIPanel
         // ================================================================
         private static void BuildSequencePuzzleUIPanel(Transform parent)
         {
@@ -1254,7 +1446,6 @@ namespace EscapeGame.Editor
             srt.anchoredPosition = new Vector2(0, 96);
             srt.sizeDelta        = new Vector2(360, 44);
 
-            // 2×2 ボタンレイアウト
             var keypadGo = new GameObject("ButtonGrid");
             keypadGo.transform.SetParent(panelInner.transform, false);
             var grid = keypadGo.AddComponent<GridLayoutGroup>();
@@ -1294,7 +1485,7 @@ namespace EscapeGame.Editor
         }
 
         // ================================================================
-        //  ColorPuzzleUIPanel（3色ボタン）
+        //  ColorPuzzleUIPanel
         // ================================================================
         private static void BuildColorPuzzleUIPanel(Transform parent)
         {
@@ -1306,7 +1497,7 @@ namespace EscapeGame.Editor
                 Vector2.zero, new Vector2(440, 370), C_BgPanel, C_BorderCyan, 2f);
             SetAnchorCenter(panelOuter);
 
-            var titleTxt = CreateText(panelInner.transform, "TitleText", "◈  色パネル",
+            var titleTxt = CreateText(panelInner.transform, "TitleText", "◈  ARIAパネル",
                 new Vector2(0, 142), new Vector2(400, 46), C_Cyan, 22, TextAnchor.MiddleCenter, bold: true);
             AddTextShadow(titleTxt, C_CyanGlow);
             CreatePanel(panelInner.transform, "TitleLine",
@@ -1334,7 +1525,6 @@ namespace EscapeGame.Editor
             cso.FindProperty("statusText").objectReferenceValue = statusTxt;
             cso.ApplyModifiedPropertiesWithoutUndo();
 
-            // 色ボタン（青・赤・黄）
             var colorDefs = new (string id, string label, Color fill, Color border)[]
             {
                 ("Blue",   "青", new Color(0.06f, 0.20f, 0.60f), new Color(0.30f, 0.55f, 1.00f)),
@@ -1390,7 +1580,6 @@ namespace EscapeGame.Editor
             return go;
         }
 
-        /// <summary>縁取り付きパネル（outer=枠, inner=塗り）</summary>
         private static (GameObject outer, GameObject inner) CreateStyledPanel(
             Transform parent, string name, Vector2 pos, Vector2 size,
             Color fillColor, Color borderColor, float border = 1.5f)
@@ -1405,7 +1594,6 @@ namespace EscapeGame.Editor
             return (outer, inner);
         }
 
-        /// <summary>縁取り付きボタン</summary>
         private static Button CreateStyledButton(Transform parent, string name, string label,
             Vector2 pos, Vector2 size, Color fillColor, Color borderColor)
         {
@@ -1413,8 +1601,7 @@ namespace EscapeGame.Editor
 
             var btn = outer.AddComponent<Button>();
             var img = outer.GetComponent<Image>();
-            // ColorBlock 設定
-            var cb = btn.colors;
+            var cb  = btn.colors;
             cb.normalColor      = Color.white;
             cb.highlightedColor = new Color(1.30f, 1.35f, 1.50f);
             cb.pressedColor     = new Color(0.65f, 0.70f, 0.80f);
@@ -1464,13 +1651,13 @@ namespace EscapeGame.Editor
         private static GameObject CreateQuad(string name, Vector3 pos, Vector3 scale, Color color)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            go.name             = name;
-            go.transform.position    = pos;
-            go.transform.localScale  = scale;
+            go.name                 = name;
+            go.transform.position   = pos;
+            go.transform.localScale = scale;
             Object.DestroyImmediate(go.GetComponent<MeshCollider>());
             var mr  = go.GetComponent<MeshRenderer>();
             var mat = new Material(Shader.Find("Sprites/Default"));
-            mat.color        = color;
+            mat.color         = color;
             mr.sharedMaterial = mat;
             return go;
         }
@@ -1497,7 +1684,6 @@ namespace EscapeGame.Editor
             rt.sizeDelta = new Vector2(300, 60);
         }
 
-        // ---- テキスト効果 ----
         private static void AddTextShadow(Text txt, Color? color = null)
         {
             var s = txt.gameObject.AddComponent<Shadow>();
@@ -1512,7 +1698,6 @@ namespace EscapeGame.Editor
             o.effectDistance = new Vector2(1f, -1f);
         }
 
-        // ---- オブジェクトフレーム（アクセントカラーの薄い縁） ----
         private static void AddObjectFrame(GameObject obj, Color frameColor, float margin)
         {
             var frame = CreateQuad(obj.name + "_Frame",
@@ -1525,11 +1710,9 @@ namespace EscapeGame.Editor
             frame.transform.SetSiblingIndex(obj.transform.GetSiblingIndex());
         }
 
-        // ---- ボタンのラベル Text を返す ----
         private static Text GetBtnLabel(Button btn)
             => btn.GetComponentInChildren<Text>();
 
-        // ---- RectTransform アンカーユーティリティ ----
         private static void SetStretch(GameObject go)
         {
             var rt = go.GetComponent<RectTransform>();

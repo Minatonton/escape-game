@@ -13,7 +13,12 @@ namespace EscapeGame.Room
         protected override void OnInteract()
         {
             if (logData == null) return;
-            ExaminePanel.Show($"【{logData.title}】\n{logData.bodyText}");
+
+            string title = string.IsNullOrEmpty(logData.speakerName)
+                ? $"【{logData.title}】"
+                : $"【{logData.title}】  —  {logData.speakerName}";
+
+            ExaminePanel.ShowWithTitle(title, logData.bodyText);
             SaveManager.Instance?.SetFlag($"log_{logData.logId}", true);
         }
     }

@@ -9,6 +9,7 @@ namespace EscapeGame.Inventory
     public class ItemPickup : InteractableObject
     {
         [SerializeField] private ItemData itemData;
+        [SerializeField, TextArea(2, 6)] private string pickupDescription;
         [SerializeField] private bool pickedUp = false;
 
         protected override void OnInteract()
@@ -20,7 +21,10 @@ namespace EscapeGame.Inventory
             if (added)
             {
                 pickedUp = true;
-                ExaminePanel.Show($"「{itemData.displayName}」を手に入れた！");
+                string msg = string.IsNullOrEmpty(pickupDescription)
+                    ? $"「{itemData.displayName}」を手に入れた！"
+                    : $"{pickupDescription}\n\n「{itemData.displayName}」を手に入れた！";
+                ExaminePanel.Show(msg, 6f);
                 gameObject.SetActive(false);
             }
             else
